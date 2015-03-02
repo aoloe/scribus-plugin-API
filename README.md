@@ -1,0 +1,1 @@
+# scribus-plugin-API
