@@ -4,19 +4,19 @@
 #include "scribuscore.h"
 #include "scribusdoc.h"
 
-int scribusAPIplugin_getPluginAPIVersion()
+int scribusAPI_getPluginAPIVersion()
 {
 	return PLUGIN_API_VERSION;
 }
 
-ScPlugin* scribusAPIplugin_getPlugin()
+ScPlugin* scribusAPI_getPlugin()
 {
 	ScribusAPIPlugin* plug = new ScribusAPIPlugin();
 	Q_CHECK_PTR(plug);
 	return plug;
 }
 
-void scribusAPIplugin_freePlugin(ScPlugin* plugin)
+void scribusAPI_freePlugin(ScPlugin* plugin)
 {
 	ScribusAPIPlugin* plug = dynamic_cast<ScribusAPIPlugin*>(plugin);
 	Q_ASSERT(plug);

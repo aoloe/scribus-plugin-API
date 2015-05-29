@@ -33,8 +33,8 @@ public:
 	virtual void addToMainWindowMenu(ScribusMainWindow *) {};
 };
 
-extern "C" PLUGIN_API int scribusAPIplugin_getPluginAPIVersion();
-extern "C" PLUGIN_API ScPlugin* scribusAPIplugin_getPlugin();
-extern "C" PLUGIN_API void scribusAPIplugin_freePlugin(ScPlugin* plugin);
+extern "C" PLUGIN_API int scribusAPI_getPluginAPIVersion();
+extern "C" PLUGIN_API ScPlugin* scribusAPI_getPlugin();
+extern "C" PLUGIN_API void scribusAPI_freePlugin(ScPlugin* plugin);
 
 #endif // SCRIBUSAPIPLUGIN_H
