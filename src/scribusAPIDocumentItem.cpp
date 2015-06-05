@@ -6,8 +6,8 @@
 
 #include "util_formats.h" // for checking file extension
 
-#include "module/scribusAPIDocumentItem.h"
-#include "module/scribusAPIDocumentItemFormatting.h"
+#include "scribusAPIDocumentItem.h"
+#include "scribusAPIDocumentItemFormatting.h"
 
 ScribusAPIDocumentItem::ScribusAPIDocumentItem()
 {

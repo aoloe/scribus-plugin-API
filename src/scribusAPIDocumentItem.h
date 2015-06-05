@@ -20,7 +20,7 @@ class QDomElement;
 
 #include "scribusdoc.h"
 
-#include "module/scribusAPIDocumentItemFormatting.h"
+#include "scribusAPIDocumentItemFormatting.h"
 
 struct ScribusAPIDocumentItemTextRuns
 {

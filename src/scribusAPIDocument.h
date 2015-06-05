@@ -15,7 +15,7 @@
 
 #include "scribusdoc.h"
 
-#include "module/scribusAPIDocumentItem.h"
+#include "scribusAPIDocumentItem.h"
 
 // class ScribusDoc;
 // class PageItem;

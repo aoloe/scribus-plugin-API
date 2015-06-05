@@ -1,4 +1,4 @@
-#include "scribusAPI.h"
+// #include "scribusAPI.h"
 #include "scribusAPIplugin.h"
 
 #include "scribuscore.h"

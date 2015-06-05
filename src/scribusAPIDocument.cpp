@@ -6,10 +6,9 @@
 #include <QVectorIterator> // for sorting the items on the page
 
 
-#include "module/scribusAPIDocument.h"
-#include "module/scribusAPIDocumentItem.h"
+#include "scribusAPIDocument.h"
+#include "scribusAPIDocumentItem.h"
 // TODO: i guess that the following include should be removed
-#include "module/epubexportStructure.h"
 
 #include "scribusdoc.h"
 #include "scribusview.h" // for the cover
