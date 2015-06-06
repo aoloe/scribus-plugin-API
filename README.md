@@ -2,7 +2,15 @@
 
 A stable, high level and documented interface to the Scribus core that plugin developers can use to access the Scribus features.
 
-# Roadmap
+## Install
+
+Clone the `scribus-plugin-API` repository and put – or symlink – its `src` directory into `scribus/plugins/` as `scribusAPI`. Then add 
+
+    ADD_SUBDIRECTORY(scribusAPI)
+
+to `CMakeList.txt` file in `scribus/plugins/`.
+
+## Roadmap
 
 - [x] setup the plugin
 - [ ] activate a first class and method and try to call it from another plugin
