@@ -1,0 +1,5 @@
+outputdir   = html
+headerdirs  = ../src
+sourcedirs  = ../src
+exampledirs = .
+imagedirs   = ./images
