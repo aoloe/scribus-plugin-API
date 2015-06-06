@@ -1,5 +1,13 @@
+project = Scribus API for plugins
+description = An high level API for accessing the Scribus internals
+version = 0.0
+
 outputdir   = html
 headerdirs  = ../src
 sourcedirs  = ../src
 exampledirs = .
 imagedirs   = ./images
+
+
+sources.fileextensions +=  *.cpp *.qdoc
+headers.fileextensions +=  *.h

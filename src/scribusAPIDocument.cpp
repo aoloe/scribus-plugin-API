@@ -14,6 +14,13 @@
 #include "scribusview.h" // for the cover
 #include "scribusstructs.h" // for getPageRect() remove it, it's moved to ScPage
 
+/*!
+    \class ScribusAPIDocument
+    \brief Main class for creating the GUI and interpreting the user input
+
+    Test text comes here...
+ */
+
 ScribusAPIDocument::ScribusAPIDocument()
 {
 }
@@ -22,6 +29,12 @@ ScribusAPIDocument::~ScribusAPIDocument()
 {
 }
 
+/*!
+    \fn ScribusAPIDocument::getMetadata()
+
+    Returns the metadata
+
+*/
 ScribusAPIDocumentMetadata ScribusAPIDocument::getMetadata()
 {
     ScribusAPIDocumentMetadata metadata = ScribusAPIDocumentMetadata();
