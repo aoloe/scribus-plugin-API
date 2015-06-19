@@ -14,6 +14,7 @@ to `CMakeList.txt` file in `scribus/plugins/`.
 
 - [x] setup the plugin
 - [ ] activate a first class and method and try to call it from another plugin
+- [ ] use namespaces
 - [ ] setup a documentation framework (probably QDoc)
 - [ ] move the epub's plugin `ScribusDocument` class to the `ScribusAPI`
 - [ ] make more publicity for this project and find out how to improve its architecture / add more coverage of Scribus features.
