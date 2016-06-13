@@ -58,9 +58,13 @@ class ScribusAPIDocument : public QObject
     Q_OBJECT
 
 public:
+	ScribusAPIDocument(ScribusDoc* scribusDoc) : scribusDoc{scribusDoc} {};
 	ScribusAPIDocument();
 	~ScribusAPIDocument();
 
+    /**
+     * @deprecated Construct one ScribusAPIDocument object for each scribusDoc.
+     */
     void set(ScribusDoc* scribusDoc) { this->scribusDoc = scribusDoc; }
     void setPageRange(QList<int> pageRange) { this->pageRange = pageRange; }
 

@@ -249,10 +249,13 @@ QString ScribusAPIDocument::getStylenameSanitized(QString stylename)
  */
 
 /**
- * go through the full items list in the document and add a reference of the printable ones
- * in a list sorted by page and by placement on the page.
+ * @brief Create a list ScribusAPIDocumentItem representing all document's items sorted by page and postion.
+ *
+ * Go through the full items list (PageItem) in the Scribus document (ScribusDoc) and collect the reference of
+ * the printable ones in a list sorted by page and by placement on the page.
+ *
  * TODO: correctly handle the page ranges (from .. to)
- * TODO: rename it to signify that it only reads visible items on a page (and make it a getter?)
+ * TODO: rename it to signify that it only reads visible items on a page and collapses layers (and make it a getter?) -> readSortedItemsForExport()?
  */
 void ScribusAPIDocument::readItems()
 {

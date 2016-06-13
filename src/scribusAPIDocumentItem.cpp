@@ -6,6 +6,9 @@
 
 #include "util_formats.h" // for checking file extension
 
+#include "marks.h" // for footnotes
+#include "util_text.h" // for footnotes and desaxeString
+
 #include "scribusAPIDocumentItem.h"
 #include "scribusAPIDocumentItemFormatting.h"
 
@@ -18,7 +21,9 @@ ScribusAPIDocumentItem::~ScribusAPIDocumentItem()
 }
 
 /**
- * TODO: as soon as other write directions are to be considered the order has to be made more flexible
+ * TODO:
+ * - as soon as other write directions are to be considered the order has to be made more flexible
+ * - we could have fancier rules for the position
  */
 bool ScribusAPIDocumentItem::isBefore(ScribusAPIDocumentItem* const item) const
 {
@@ -52,6 +57,7 @@ bool ScribusAPIDocumentItem::isBefore(ScribusAPIDocumentItem* const item) const
  *   - insert the text line by line (with a br at the end of each but the last line)
  *   - add the p to the dom
  *   - set the current element as the latest element paragraph created
+ *   TODO: should xhtmlDocument be passed by value?
  */
 QList<QDomElement> ScribusAPIDocumentItem::getTextDom(QDomDocument xhtmlDocument)
 {
@@ -391,12 +397,14 @@ QList<ScribusAPIDocumentItemResourceFile> ScribusAPIDocumentItem::getResourceFil
 }
 
 /**
- * parse the text and define the runs list
+ * @brief Parse the text and define the runs list.
+ *
+ * Runs are strings with a common formatting. The paragraph ends the run.
+ *
  * this method is based on pierre's work for the mitical OIF branch
  * ... also inspired by Scribus150Format::writeITEXTs
  * TODO: use the text/storytext methods as soon as they are implemented
  */
-
 QVector<ScribusAPIDocumentItemTextRuns> ScribusAPIDocumentItem::getTextRuns()
 {
     QVector<ScribusAPIDocumentItemTextRuns> runs; // the indexes where the runs start
@@ -428,6 +436,39 @@ QVector<ScribusAPIDocumentItemTextRuns> ScribusAPIDocumentItem::getTextRuns()
 
             const CharStyle& style1(itemText.charStyle(i));
             const QChar ch = itemText.text(i);
+            if (itemText.hasMark(i))
+            {
+                Mark* mark = itemText.mark(i);
+                // qDebug() << "properties mark " << mark->getType(); // 4 is a footnote
+                // qDebug() << "MARKNoteFrameType " << MARKNoteFrameType; // 5
+                // qDebug() << "MARKNoteMasterType" << MARKNoteMasterType; // 4
+                if (mark->getType() == MARKNoteMasterType) // 4
+                {
+                    TextNote* footnote = mark->getData().notePtr;
+                    qDebug() << "calling mark:" << mark->getString();
+                    if (!footnote->saxedText().isEmpty())
+                    {
+                        qDebug() << "footnote text?" << footnote->saxedText();
+                        // TODO: desaxe needs a reference to scribusDoc which we dont have.
+                        // but saveText() looks like this:
+                        // <?xml version=\"1.0\" encoding=\"UTF-8\"?><SCRIBUSTEXT ><defaultstyle /><p ><style LineSpacingMode=\"1\" /><span ><charstyle Features=\"inherit \" />this is </span><span ><charstyle Features=\"inherit \" FontSize=\"80\" />the</span><span ><charstyle Features=\"inherit \" /> footnote</span></p></SCRIBUSTEXT>\n"
+                        // we should probably use the Qt XML parser to extract the text and formatting. or read
+                        // andreas post http://lists.scribus.info/pipermail/scribus-dev/2014-May/002084.html and
+                        // decide...
+
+
+
+                        // StoryText footnoteText = desaxeString(scribusDoc, footnote->saxedText());
+                        // qDebug() << "note text:" << footnoteText.text(0, footnoteText.length());
+                        // TODO: refactor to be able to recursively call the html formatting!
+                    }
+                }
+                if (mark->getType() == MARKNoteFrameType) // 5
+                {
+                    continue;
+                    // ignore: we already collected the footnote text, when the master mark has been found
+                }
+            }
             /*
             // TODO: we have to correctly handle the marks
             ScText* chProperties = itemText.item(i);
