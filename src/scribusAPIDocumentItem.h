@@ -28,6 +28,7 @@ struct ScribusAPIDocumentItemTextRuns
     int length;
     char type; // p=paragraph, f=formatting
     QVector< QVector<QString> > content;
+	bool isParagraph() {return type == 'p';}
 };
 
 struct ScribusAPIDocumentItemResourceFile
@@ -54,6 +55,7 @@ public:
 	~ScribusAPIDocumentItem();
     void setPageNumber(int pageNumber) { this->pageNumber = pageNumber; }
     void setItem(PageItem* item) { this->item = item; }
+    PageItem* getItem() { return this->item; }
     bool isBefore(ScribusAPIDocumentItem* const item) const;
     /**
      * used by qSort to sort the items by their place on the page

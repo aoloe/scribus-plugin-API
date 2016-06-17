@@ -83,7 +83,7 @@ QList<QDomElement> ScribusAPIDocumentItem::getTextDom(QDomDocument xhtmlDocument
             formatting.readAtPosition(run.position);
 
             // qDebug() << "run:" << run;
-            if (run.type == 'p')
+            if (run.isParagraph())
             {
                 if (!elementParagraph.isNull())
                     result.append(elementParagraph);
