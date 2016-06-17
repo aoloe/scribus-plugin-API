@@ -13,6 +13,11 @@ ScribusAPIDocumentItemFormatting::ScribusAPIDocumentItemFormatting()
 {
 }
 
+ScribusAPIDocumentItemFormatting::ScribusAPIDocumentItemFormatting(ScribusAPIDocumentItem* item)
+{
+	this->item = item->getItem();
+}
+
 ScribusAPIDocumentItemFormatting::~ScribusAPIDocumentItemFormatting()
 {
 }

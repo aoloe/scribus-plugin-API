@@ -40,9 +40,12 @@ class ScribusAPIDocumentItemFormatting : public QObject
     Q_OBJECT
 
 public:
+    /** @ deprecate we should probably construct a new object for each formatting */
 	ScribusAPIDocumentItemFormatting();
+	ScribusAPIDocumentItemFormatting(ScribusAPIDocumentItem* item);
 	~ScribusAPIDocumentItemFormatting();
 
+    /** @ deprecate we should probably construct a new object for each formatting */
     void setItem(PageItem* item) { this->item = item; }
     void setPosition(int position) { this->position = position; }
     void readAtPosition(PageItem* item, int position);
