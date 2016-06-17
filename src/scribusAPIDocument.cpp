@@ -13,6 +13,7 @@
 #include "scribusdoc.h"
 #include "scribusview.h" // for the cover
 #include "scribusstructs.h" // for getPageRect() remove it, it's moved to ScPage
+#include "selection.h"
 
 /*!
     \class ScribusAPIDocument
@@ -66,7 +67,7 @@ ScribusAPIDocumentMetadata ScribusAPIDocument::getMetadata()
 /**
   * add OEBPS/Styles/style.css to the current epub file
   * TODO: move to ScribusAPIDocumentStyle
-  */ 
+  */
 QString ScribusAPIDocument::getStylesAsCss()
 {
     int n = 0;
@@ -209,24 +210,40 @@ QString ScribusAPIDocument::getStylesAsCss()
 }
 
 /**
- * create a cover as a png of the first page of the .sla
- * From the Sigil documentation:
- * - Image size should be 590 pixels wide x 750 pixels high
- * - Image resolution should be 72 pixels per inch (ppi) or higher
- * - Use color images, saved in RGB color space
- * - Image format can be JPEG, GIF, or PNG.
- * TODO:
- * - make sure that a cover.png image does not yet exist
- * - create an xhtml file with the cover?
- *   http://blog.threepress.org/2009/11/20/best-practices-in-epub-cover-images/
+ * @brief Get the page as a PNG image.
+ * @param pageNumber the page to be returned.
+ * @param width maximal width; if 0, ignored.
+ * @param height maximal height; if 0, ignored.
+ *
+ * @todo implement this (what's the use case?); untested for now.
  */
-QByteArray ScribusAPIDocument::getFirstPageAsCoverImage()
+QByteArray ScribusAPIDocument::getPageAsPNG(int pageNumber, int width, int height)
+{
+    /*
+    const ScPage* page = scribusDoc->DocPages.at(pageNumber)
+	// return (static_cast<int>(page->width()) >= static_cast<int>(page->width()));
+
+    if (this->isPortrait(0))
+        if (height == 0)
+            height = page.height * (page.width / width);
+        else if (height < width)
+            height = height * (page.width / width);
+        return getPageAsPNG(pageNumber, height);
+    else
+        return getPageAsPNG(pageNumber, width);
+    */
+    return getPageAsPNG(pageNumber, width); // dummy implementation
+}
+
+/**
+ * @brief Get the page as a PNG image.
+ * @param pageNumber the page to be returned.
+ * @param maxSize the size of the longer measurement between widht and height
+ */
+QByteArray ScribusAPIDocument::getPageAsPNG(int pageNumber, int maxSize)
 {
     QImage image;
-    if (this->isPortrait(scribusDoc->DocPages.at(0)))
-        image = scribusDoc->view()->PageToPixmap(0, 750, false);
-    else
-        image = scribusDoc->view()->PageToPixmap(590, 0, false);
+    image = scribusDoc->view()->PageToPixmap(pageNumber, maxSize, false);
 
     QByteArray bytearray;
     QBuffer buffer(&bytearray);
@@ -236,12 +253,21 @@ QByteArray ScribusAPIDocument::getFirstPageAsCoverImage()
     return bytearray;
 }
 
+QString ScribusAPIDocument::getPageNumberByIndex(int i)
+{
+	return scribusDoc->getSectionPageNumberForPageIndex(i);
+}
+
 QString ScribusAPIDocument::getStylenameSanitized(QString stylename)
 {
     return stylename.remove(QRegExp("[^a-zA-Z\\d_-]"));
 }
 
-
+bool ScribusAPIDocument::isPortrait(int pageNumber)
+{
+    const ScPage* page = scribusDoc->DocPages.at(pageNumber);
+	return (static_cast<int>(page->width()) >= static_cast<int>(page->width()));
+}
 
 /* =====================================================================================
  *  THE FOLLOWING METHODS SHOULD PROBABLY RATHER TO GO THE SCRIBUS MAIN CODE
@@ -294,6 +320,25 @@ void ScribusAPIDocument::readItems()
     qDebug() << "items:" << items;
 }
 
+ScribusAPIDocumentItem* ScribusAPIDocument::getCurrentItem()
+{
+
+	if (scribusDoc->m_Selection->count() != 1)
+	{
+		return NULL; // TODO: c++11 nullptr
+	}
+
+	ScribusAPIDocumentItem* documentItem = new ScribusAPIDocumentItem();
+
+	PageItem* current = scribusDoc->m_Selection->itemAt(0);
+
+	documentItem->setItem(current);
+	// documentItem->setPageNumber(pageNumber); TODO: find out the page number
+
+	return documentItem;
+}
+
+
 void ScribusAPIDocument::readSections()
 {
 
@@ -308,6 +353,7 @@ void ScribusAPIDocument::readSections()
     }
     qDebug() << "sections" << sections;
 }
+
 
 QList<ScPage*> ScribusAPIDocument::getPagesList()
 {
@@ -412,11 +458,6 @@ MarginStruct ScribusAPIDocument::getPageBleeds(const ScPage* page)
     MarginStruct result;
     scribusDoc->getBleeds(page, result);
     return result;
-}
-
-bool ScribusAPIDocument::isPortrait(const ScPage* page)
-{
-        return (static_cast<int>(page->width()) >= static_cast<int>(page->width()));
 }
 
 QDebug operator<<(QDebug dbg, const ScribusAPIDocumentMetadata &metadata)

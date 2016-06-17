@@ -69,17 +69,22 @@ public:
     void setPageRange(QList<int> pageRange) { this->pageRange = pageRange; }
 
     ScribusAPIDocumentMetadata getMetadata();
+    bool isPortrait(int pageNumber);
 
     void readItems();
     QList<ScribusAPIDocumentItem*> getPageItems(int page) { return this->items[page];}
     // QList<ScribusAPIDocumentItem*> getPageItems(int page) { QList<ScribusAPIDocumentItem*> result; return result;}
+	ScribusAPIDocumentItem* getCurrentItem();
 
     void readSections();
     QVector< QList<int> > getSections() { return this->sections; }
     QString getStylesAsCss();
+    QByteArray getPageAsPNG(int pageNumber, int width, int height);
+    QByteArray getPageAsPNG(int pageNumber, int maxSize);
     QByteArray getFirstPageAsCoverImage();
 
     int getPageCount() { return this->scribusDoc->DocPages.count(); }
+	QString getPageNumberByIndex(int i);
     int getSectionCount() { return this->scribusDoc->prefsData().docSectionMap.count(); }
 private:
     ScribusDoc* scribusDoc;
@@ -99,7 +104,6 @@ private:
     QList<ScPage *> getPagesWithItem(PageItem* item);
     QRect getPageRect(const ScPage* page);
     MarginStruct getPageBleeds(const ScPage* page);
-    bool isPortrait(const ScPage* page);
     QList<ScPage*> getPagesList();
 
 };
@@ -107,4 +111,4 @@ private:
 QDebug operator<<(QDebug dbg, const ScribusAPIDocument &scribusDocument);
 QDebug operator<<(QDebug dbg, const ScribusAPIDocumentMetadata &metadata);
 
-#endif // SCRIBUSAPIDOCUMENT_H 
+#endif // SCRIBUSAPIDOCUMENT_H
