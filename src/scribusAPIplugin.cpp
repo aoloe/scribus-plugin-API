@@ -34,18 +34,6 @@ ScribusAPIPlugin::~ScribusAPIPlugin()
 
 void ScribusAPIPlugin::languageChange()
 {
-    /*
-	// Note that we leave the unused members unset. They'll be initialised
-	// with their default ctors during construction.
-	// Action name
-	m_actionInfo.name = "ExportAsEPUB";
-	// Action text for menu, including accel
-	m_actionInfo.text = tr("Save as &EPUB...");
-	// Menu
-	m_actionInfo.menu = "FileExport";
-	m_actionInfo.enabledOnStartup = false;
-	m_actionInfo.needsNumObjects = -1;
-    */
 }
 
 const QString ScribusAPIPlugin::fullTrName() const
@@ -69,10 +57,3 @@ void ScribusAPIPlugin::deleteAboutData(const AboutData* about) const
 	Q_ASSERT(about);
 	delete about;
 }
-
-/*
-bool ScribusAPIPlugin::run(ScribusDoc* doc, QString target)
-{
-    return true;
-}
-*/
