@@ -1,5 +1,4 @@
 #include "scribusAPIDocumentItemText.h"
-#include "scribusAPIDocumentItem.h"
 
 #include <QDebug>
 #include <QVector>
@@ -7,6 +6,9 @@
 #include <QString>
 #include <QDomDocument>
 #include <QDomElement>
+
+#include "scribusAPIDocumentItem.h"
+#include "scribusAPIDocumentItemFormatting.h"
 
 ScribusAPIDocumentItemText::ScribusAPIDocumentItemText(ScribusAPIDocumentItem* documentItem) : documentItem{documentItem}
 {

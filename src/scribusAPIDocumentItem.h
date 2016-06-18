@@ -19,7 +19,6 @@
 #include "scribusdoc.h"
 
 class ScribusAPIDocumentItemText;
-#include "scribusAPIDocumentItemFormatting.h"
 
 struct ScribusAPIDocumentItemResourceFile
 {

@@ -17,8 +17,8 @@
 
 class QString;
 
-class ScribusAPIDocumentItem;
 #include "scribusAPIDocumentItem.h"
+class ScribusAPIDocumentItemFormatting;
 
 struct ScribusAPIDocumentItemTextRuns
 {

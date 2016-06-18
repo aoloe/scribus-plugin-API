@@ -1,7 +1,8 @@
+#include "scribusAPIDocumentItem.h"
+
 #include <QDebug>
 
 #include <QString>
-#include <QDomElement>
 #include <QSize>
 
 #include "util_formats.h" // for checking file extension
@@ -9,9 +10,7 @@
 #include "marks.h" // for footnotes
 #include "util_text.h" // for footnotes and desaxeString
 
-#include "scribusAPIDocumentItem.h"
 #include "scribusAPIDocumentItemText.h"
-#include "scribusAPIDocumentItemTextFormatting.h"
 
 /**
  * TODO:
