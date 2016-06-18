@@ -1,7 +1,8 @@
 /**
- * ScribusAPIDocumentItem is a proxy to the scribus' PageItem and is thought as
- * an interface to get information about the scribus items
- *
+ * ScribusAPIDocumentItem is a proxy to the scribus' PageItem and providing access to the
+ * items / frames.
+ */
+/*
  * This file is part of the ScribusAPIDocument plugin
  * (c) GPL 2, Ale Rimoldi <ale@graphicslab.org>
  * For the full copyright and license information, please view the LICENSE
@@ -15,21 +16,10 @@
 #include <QVector>
 #include <QSize>
 
-class QDomDocument;
-class QDomElement;
-
 #include "scribusdoc.h"
 
+class ScribusAPIDocumentItemText;
 #include "scribusAPIDocumentItemFormatting.h"
-
-struct ScribusAPIDocumentItemTextRuns
-{
-    int position;
-    int length;
-    char type; // p=paragraph, f=formatting
-    QVector< QVector<QString> > content;
-	bool isParagraph() {return type == 'p';}
-};
 
 struct ScribusAPIDocumentItemResourceFile
 {
@@ -51,10 +41,9 @@ class ScribusAPIDocumentItem : public QObject
 {
     Q_OBJECT
 public:
-	ScribusAPIDocumentItem();
-	~ScribusAPIDocumentItem();
+	ScribusAPIDocumentItem(PageItem* item) : item{item} {}
+	~ScribusAPIDocumentItem() {}
     void setPageNumber(int pageNumber) { this->pageNumber = pageNumber; }
-    void setItem(PageItem* item) { this->item = item; }
     PageItem* getItem() { return this->item; }
     bool isBefore(ScribusAPIDocumentItem* const item) const;
     /**
@@ -66,31 +55,20 @@ public:
 
     bool isTextFrame() { return this->item->asTextFrame(); }
     bool isImageFrame() { return this->item->asImageFrame(); }
-    bool isTextFirstInChain() { return this->item->prevInChain() == NULL; }
-    bool isTextEmpty() { return this->item->itemText.length() == 0; }
+    ScribusAPIDocumentItemText* getText();
 
     QString getName() { return this->item->itemName(); }
 
-    ScribusAPIDocumentItemFormatting getFormattingAtPosition(int position);
 
-    // QString getXhtmlContent(QDomDocument xhtmlDocument);
-    QList<QDomElement> getTextDom(QDomDocument xhtmlDocument);
     ScribusAPIDocumentItemImageWeb getImageWeb();
     QList<ScribusAPIDocumentItemResourceFile> getResourceFiles();
-
-    QVector<ScribusAPIDocumentItemTextRuns> getTextRuns();
 
 protected:
     int pageNumber;
     PageItem* item;
-
-    QString getStylenameSanitized(QString stylename);
-
 };
 
 QDebug operator<<(QDebug dbg, const ScribusAPIDocumentItem &scribusDocumentItem);
-QDebug operator<<(QDebug dbg, const QVector<ScribusAPIDocumentItemTextRuns> &runs);
-QDebug operator<<(QDebug dbg, const ScribusAPIDocumentItemTextRuns run);
 QDebug operator<<(QDebug dbg, const ScribusAPIDocumentItemResourceFile file);
 QDebug operator<<(QDebug dbg, const ScribusAPIDocumentItemImageWeb image);
 

@@ -307,8 +307,7 @@ void ScribusAPIDocument::readItems()
 
         int pageNumber= itemPages.first()->pageNr();
 
-        ScribusAPIDocumentItem* documentItem = new ScribusAPIDocumentItem();
-        documentItem->setItem(docItem);
+        ScribusAPIDocumentItem* documentItem = new ScribusAPIDocumentItem(docItem);
         documentItem->setPageNumber(pageNumber);
         items[pageNumber].append(documentItem);
         // itemCounter++; eventually, for the progress bar... but we should probably count the pages
@@ -328,11 +327,9 @@ ScribusAPIDocumentItem* ScribusAPIDocument::getCurrentItem()
 		return NULL; // TODO: c++11 nullptr
 	}
 
-	ScribusAPIDocumentItem* documentItem = new ScribusAPIDocumentItem();
-
 	PageItem* current = scribusDoc->m_Selection->itemAt(0);
+	ScribusAPIDocumentItem* documentItem = new ScribusAPIDocumentItem(current);
 
-	documentItem->setItem(current);
 	// documentItem->setPageNumber(pageNumber); TODO: find out the page number
 
 	return documentItem;
