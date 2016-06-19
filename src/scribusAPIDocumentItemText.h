@@ -18,7 +18,7 @@
 class QString;
 
 #include "scribusAPIDocumentItem.h"
-class ScribusAPIDocumentItemFormatting;
+class ScribusAPIDocumentItemTextFormatting;
 
 struct ScribusAPIDocumentItemTextRuns
 {
@@ -36,13 +36,24 @@ public:
 	ScribusAPIDocumentItemText(ScribusAPIDocumentItem* documentItem);
 	~ScribusAPIDocumentItemText();
 
-	bool isTextFirstInChain() { return documentItem->getItem()->prevInChain() == NULL; }
-	bool isTextEmpty() { return documentItem->getItem()->itemText.length() == 0; }
+	bool isFirstInChain() { return documentItem->getItem()->prevInChain() == NULL; }
+	bool isEmpty() { return documentItem->getItem()->itemText.length() == 0; }
 
-	QVector<ScribusAPIDocumentItemTextRuns> getTextRuns();
-	QList<QDomElement> getTextDom(QDomDocument xhtmlDocument);
+	QVector<ScribusAPIDocumentItemTextRuns> getStoryRuns();
+	QVector<ScribusAPIDocumentItemTextRuns> getRuns();
+	QVector<ScribusAPIDocumentItemTextRuns> getRuns(int start, int end);
+	QList<QDomElement> getDom(QDomDocument xhtmlDocument);
 
-	ScribusAPIDocumentItemFormatting getFormattingAtPosition(int position);
+	ScribusAPIDocumentItemTextFormatting getFormattingAtPosition(int position);
+
+	int getLength();
+	int getStoryLength();
+	void setCursorPosition(int position);
+	void insert(const QString text, const QString paragraphStyle = "", const QString characterStyle = "");
+	void append(const QString text, const QString paragraphStyle = "", const QString characterStyle = "");
+	void appendParagraph(const QString text, const QString paragraphStyle = "");
+	void applyParagraphStyle(const QString styleNamej);
+	void applyParagraphStyle(int position, const QString styleNamej);
 
 private:
 	ScribusAPIDocumentItem* documentItem;

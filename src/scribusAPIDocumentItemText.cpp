@@ -8,7 +8,7 @@
 #include <QDomElement>
 
 #include "scribusAPIDocumentItem.h"
-#include "scribusAPIDocumentItemFormatting.h"
+#include "scribusAPIDocumentItemTextFormatting.h"
 
 ScribusAPIDocumentItemText::ScribusAPIDocumentItemText(ScribusAPIDocumentItem* documentItem) : documentItem{documentItem}
 {
@@ -18,42 +18,65 @@ ScribusAPIDocumentItemText::~ScribusAPIDocumentItemText()
 {
 }
 
+
+/**
+ * @brief Get the runs for the full story of the text frame.
+ *
+ * When looping through all the items in a document, you will probably want to check
+ * if the current item is the beginning of a chain before calling getStoryRuns().
+ *
+ * @see getRuns(int start, int end) for more details.
+ */
+QVector<ScribusAPIDocumentItemTextRuns> ScribusAPIDocumentItemText::getStoryRuns()
+{
+	return getRuns(0, documentItem->getItem()->itemText.length());
+}
+
+/**
+ * @brief Get the runs in the text frame.
+ *
+ * @see getRuns(int start, int end) for more details.
+ */
+QVector<ScribusAPIDocumentItemTextRuns> ScribusAPIDocumentItemText::getRuns()
+{
+	return getRuns(documentItem->getItem()->firstInFrame(), documentItem->getItem()->lastInFrame());
+}
+
 /**
  * @brief Parse the text and define the runs list.
+ * @brief Get the runs for a specific range in the story.
  *
- * Runs are strings with a common formatting. The paragraph ends the run.
+ * Runs are strings with a common formatting. The paragraph mark ends the run.
  *
  * this method is based on pierre's work for the mitical OIF branch
  * ... also inspired by Scribus150Format::writeITEXTs
  * @todo:
  * - use the text/storytext methods as soon as they are implemented
  */
-QVector<ScribusAPIDocumentItemTextRuns> ScribusAPIDocumentItemText::getTextRuns()
+QVector<ScribusAPIDocumentItemTextRuns> ScribusAPIDocumentItemText::getRuns(int start, int end)
 {
 	QVector<ScribusAPIDocumentItemTextRuns> runs; // the indexes where the runs start
 	struct ScribusAPIDocumentItemTextRuns runsItem;
 	runs.clear();
 
 	CharStyle lastStyle;
-	int lastPos = 0;
-	runsItem.position = 0;
+	int lastPos = start;
+	runsItem.position = start;
 	runsItem.type = 'p';
 	runsItem.content.clear();
 
 	StoryText itemText = documentItem->getItem()->itemText;
-	int n = itemText.length();
 
 	QVector<QString> lines;
 	QString line = "";
 
-	if (n == 0) {
+	if (end == 0) {
 		runsItem.length = 0;
 		runs.append(runsItem);
 	} else {
 		lines.clear();
-		QString content = itemText.text(0, itemText.length());
 
-		for(int i = 0; i < n; ++i)
+		for(int i = start; i < end; ++i)
 		{
 			bool output = true;
 
@@ -222,7 +245,7 @@ QVector<ScribusAPIDocumentItemTextRuns> ScribusAPIDocumentItemText::getTextRuns(
 			if (output)
 				line += ch;
 		}
-		runsItem.length = n - runsItem.position;
+		runsItem.length = end - runsItem.position;
 		if (line != "")
 			lines.append(line);
 
@@ -265,8 +288,9 @@ QVector<ScribusAPIDocumentItemTextRuns> ScribusAPIDocumentItemText::getTextRuns(
  *   - set the current element as the latest element paragraph created
  *   @todo:
  *   - should xhtmlDocument be passed by value?
+ *   - eventually allow to get the dom of the current frame only (not the full story)
  */
-QList<QDomElement> ScribusAPIDocumentItemText::getTextDom(QDomDocument xhtmlDocument)
+QList<QDomElement> ScribusAPIDocumentItemText::getDom(QDomDocument xhtmlDocument)
 {
     QList<QDomElement> result;
     // initialize the local variables
@@ -278,14 +302,13 @@ QList<QDomElement> ScribusAPIDocumentItemText::getTextDom(QDomDocument xhtmlDocu
     QString run_text;
 
     // qDebug() << "item name" << item->itemName();
-    ScribusAPIDocumentItemFormatting formatting;
-    formatting.setItem(documentItem->getItem());
-    // qDebug() << "isTextFirstInChain" << isTextFirstInChain(); 
-    // qDebug() << "isTextEmpty" << isTextEmpty(); 
+    ScribusAPIDocumentItemTextFormatting formatting(documentItem);
+    // qDebug() << "isFirstInChain" << isFirstInChain(); 
+    // qDebug() << "isEmpty" << isEmpty(); 
 
-    if (isTextFirstInChain() && (!isTextEmpty()))
+    if (isFirstInChain() && (!isEmpty()))
     {
-        foreach (ScribusAPIDocumentItemTextRuns run, getTextRuns())
+        foreach (ScribusAPIDocumentItemTextRuns run, getStoryRuns())
         {
             formatting.readAtPosition(run.position);
 
@@ -406,7 +429,82 @@ QString ScribusAPIDocumentItemText::getStylenameSanitized(QString stylename)
     return stylename.remove(QRegExp("[^a-zA-Z\\d_-]"));
 }
 
+/**
+ * @brief Get the number of characters in the frame
+ */
+int ScribusAPIDocumentItemText::getLength()
+{
+    PageItem* item = documentItem->getItem();
+    return item->lastInFrame() - item->firstInFrame();;
+}
 
+int ScribusAPIDocumentItemText::getStoryLength()
+{
+    return documentItem->getItem()->itemText.length();
+
+}
+
+/**
+ * @brief  Insert text at the current cursor position.
+ *
+ * Insert the text before the cursor position.
+ *
+ * Use append() to insert text after the last character.
+ */
+void ScribusAPIDocumentItemText::insert(const QString text, const QString paragraphStyle, const QString characterStyle)
+{
+}
+
+/**
+ * @brief Append text at the end of the chain of text frames.
+ *
+ * The cursor is moved to the end of the text in the chain.
+ * @todo: implement it.
+ */
+void ScribusAPIDocumentItemText::append(const QString text, const QString paragraphStyle, const QString characterStyle)
+{
+}
+
+/**
+ * @brief Append a paragraph at the end of the chain of text frames.
+ *
+ * If the story is not empty, add a new line before inserting the text.
+ * The cursor does not move.
+ */
+void ScribusAPIDocumentItemText::appendParagraph(const QString text, const QString paragraphStyle)
+{
+	PageItem* item = documentItem->getItem();
+	int pos = item->itemText.length();
+	if (!isEmpty())
+	{
+		item->itemText.insertChars(pos, SpecialChars::PARSEP);
+		pos++;
+	}
+	item->itemText.insertChars(pos, text);
+	if (paragraphStyle != "") {
+		applyParagraphStyle(paragraphStyle);
+	}
+}
+
+/**
+ * @brief  Apply the paragraph style at the current cursor position.
+ */
+void ScribusAPIDocumentItemText::applyParagraphStyle(const QString styleName)
+{
+	// ParagraphStyle pstyle;
+	// pstyle.setParent(levelSetup.textStyle);
+	// tocFrame->itemText.applyStyle(pos, pstyle);
+}
+
+/**
+ * @brief  Apply the paragraph style at a specific position.
+ */
+void ScribusAPIDocumentItemText::applyParagraphStyle(int position, const QString styleName)
+{
+	// ParagraphStyle pstyle;
+	// pstyle.setParent(levelSetup.textStyle);
+	// tocFrame->itemText.applyStyle(pos, pstyle);
+}
 
 QDebug operator<<(QDebug dbg, ScribusAPIDocumentItemText &item)
 {

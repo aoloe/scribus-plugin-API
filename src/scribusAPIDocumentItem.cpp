@@ -7,10 +7,16 @@
 
 #include "util_formats.h" // for checking file extension
 
+#include "scribusdoc.h"
 #include "marks.h" // for footnotes
 #include "util_text.h" // for footnotes and desaxeString
 
 #include "scribusAPIDocumentItemText.h"
+
+void ScribusAPIDocumentItem::render()
+{
+    scribusItem->update();
+}
 
 /**
  * TODO:
@@ -35,7 +41,7 @@ ScribusAPIDocumentItemImageWeb ScribusAPIDocumentItem::getImageWeb()
 {
     ScribusAPIDocumentItemImageWeb result;
 
-    QString filename(item->Pfile);
+    QString filename(scribusItem->Pfile);
     qDebug() << "filename" << filename;
     if (filename == "")
         return result;
@@ -68,25 +74,25 @@ ScribusAPIDocumentItemImageWeb ScribusAPIDocumentItem::getImageWeb()
     bool usingLoadedImage = false;
 
     // qDebug() << "image file" << filename;
-    // qDebug() << "imageXScale" << item->imageXScale();
-    // qDebug() << "imageYScale" << item->imageYScale();
-    // qDebug() << "imageXOffset" << item->imageXOffset();
-    // qDebug() << "imageYOffset" << item->imageYOffset();
-    // qDebug() << "item width" << item->width();
-    // qDebug() << "item height" << item->height();
-    // qDebug() << "image BBoxX" << item->pixm.imgInfo.BBoxX;
-    // qDebug() << "image BBoxH" << item->pixm.imgInfo.BBoxH;
-    // qDebug() << "image xres" << item->pixm.imgInfo.xres;
-    // qDebug() << "image yres" << item->pixm.imgInfo.yres;
-    // qDebug() << "image width" << item->pixm.width();
-    // qDebug() << "image height" << item->pixm.height();
+    // qDebug() << "imageXScale" << scribusItem->imageXScale();
+    // qDebug() << "imageYScale" << scribusItem->imageYScale();
+    // qDebug() << "imageXOffset" << scribusItem->imageXOffset();
+    // qDebug() << "imageYOffset" << scribusItem->imageYOffset();
+    // qDebug() << "item width" << scribusItem->width();
+    // qDebug() << "item height" << scribusItem->height();
+    // qDebug() << "image BBoxX" << scribusItem->pixm.imgInfo.BBoxX;
+    // qDebug() << "image BBoxH" << scribusItem->pixm.imgInfo.BBoxH;
+    // qDebug() << "image xres" << scribusItem->pixm.imgInfo.xres;
+    // qDebug() << "image yres" << scribusItem->pixm.imgInfo.yres;
+    // qDebug() << "image width" << scribusItem->pixm.width();
+    // qDebug() << "image height" << scribusItem->pixm.height();
 
-    double cropX = item->imageXOffset();
-    double cropY =  item->imageYOffset();
+    double cropX = scribusItem->imageXOffset();
+    double cropY =  scribusItem->imageYOffset();
 
     // calculate the frame's width and height in "image pixels"
-    double frameWidth = item->width() / item->imageXScale();
-    double frameHeight = item->height() / item->imageYScale();
+    double frameWidth = scribusItem->width() / scribusItem->imageXScale();
+    double frameHeight = scribusItem->height() / scribusItem->imageYScale();
 
     result.imageSize = QSize(static_cast<int>(frameWidth), static_cast<int>(frameHeight));
 
@@ -118,8 +124,8 @@ ScribusAPIDocumentItemImageWeb ScribusAPIDocumentItem::getImageWeb()
     int scaling = 100;
 
     ScPage* page = doc->DocPages.at(this->pageNumber);
-    qDebug() << "item width" << item->width();
-    double proportion = item->width() / (page->width() - page->rightMargin() - page->leftMargin());
+    qDebug() << "item width" << scribusItem->width();
+    double proportion = scribusItem->width() / (page->width() - page->rightMargin() - page->leftMargin());
     qDebug() << "proportion" << proportion;
     qDebug() << "imageMaxWidthThreshold" << imageMaxWidthThreshold;
 
@@ -152,8 +158,8 @@ ScribusAPIDocumentItemImageWeb ScribusAPIDocumentItem::getImageWeb()
     div.setAttribute("class", "picture");
     QDomElement element = xhtmlDocument.createElement("img");
     // <image height="800" width="600" xlink:href="../Images/cover.jpeg"></image>
-    element.setAttribute("height", (int) item->height()); // TODO: use the real width of the visible part of the image (as a rectangle)
-    element.setAttribute("width", (int) item->width());
+    element.setAttribute("height", (int) scribusItem->height()); // TODO: use the real width of the visible part of the image (as a rectangle)
+    element.setAttribute("width", (int) scribusItem->width());
     element.setAttribute("alt", ""); // TODO do we have a way to define the metadata? eventually from the exif? epubcheck says it's mandatory... and it's not nice to leave it empty...
     element.setAttribute("src", "../"+filepath); // TODO: make sure that the name is unique in the target! (if it already exists prefix the frame name?)
     // TODO: set the width and height? from the item?
@@ -211,7 +217,7 @@ ScribusAPIDocumentItemImageWeb ScribusAPIDocumentItem::getImageWeb()
         /*
         // TODO: some leftovers if we want ever do a color managed conversion of the pictures
         ScImage img;
-        ScImage item->pixm;
+        ScImage scribusItem->pixm;
         ImageInfoRecord imgInfo;
             ImageTypeEnum type -> 0 = jpg, 1 = tiff, 2 = psd, 3 = eps/ps, 4 = pdf, 5 = jpg2000, 6 = other
             ColorSpaceEnum colorspace -> 0 = RGB  1 = CMYK  2 = Grayscale 3 = Duotone

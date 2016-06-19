@@ -269,6 +269,11 @@ bool ScribusAPIDocument::isPortrait(int pageNumber)
 	return (static_cast<int>(page->width()) >= static_cast<int>(page->width()));
 }
 
+void ScribusAPIDocument::render()
+{
+    scribusDoc->regionsChanged()->update(QRect());
+}
+
 /* =====================================================================================
  *  THE FOLLOWING METHODS SHOULD PROBABLY RATHER TO GO THE SCRIBUS MAIN CODE
  * =====================================================================================

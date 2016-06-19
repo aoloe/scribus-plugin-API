@@ -1,29 +1,27 @@
+#include "scribusAPIDocumentItemTextFormatting.h"
+
 #include <QDebug>
 
 #include <QRegExp>
 
 #include <QDomElement>
 
+#include "scribusdoc.h"
 #include "styles/charstyle.h"
 
 #include "scribusAPIDocumentItem.h"
-#include "scribusAPIDocumentItemFormatting.h"
+#include "scribusAPIDocumentItemText.h"
 
-ScribusAPIDocumentItemFormatting::ScribusAPIDocumentItemFormatting()
-{
-}
-
-ScribusAPIDocumentItemFormatting::ScribusAPIDocumentItemFormatting(ScribusAPIDocumentItem* item)
+ScribusAPIDocumentItemTextFormatting::ScribusAPIDocumentItemTextFormatting(ScribusAPIDocumentItem* item)
 {
 	this->item = item->getItem();
 }
 
-ScribusAPIDocumentItemFormatting::~ScribusAPIDocumentItemFormatting()
+ScribusAPIDocumentItemTextFormatting::~ScribusAPIDocumentItemTextFormatting()
 {
 }
 
-
-void ScribusAPIDocumentItemFormatting::readAtPosition(PageItem* item, int position)
+void ScribusAPIDocumentItemTextFormatting::readAtPosition(PageItem* item, int position)
 {
 
     // paragraphStyleName = item->itemText.paragraphStyle(position + 1).parent(); // TODO: + 1 might be dangerous!
@@ -100,7 +98,7 @@ void ScribusAPIDocumentItemFormatting::readAtPosition(PageItem* item, int positi
 }
 
 // not tested yet
-QDebug operator<<(QDebug dbg, const ScribusAPIDocumentItemFormatting formatting)
+QDebug operator<<(QDebug dbg, const ScribusAPIDocumentItemTextFormatting formatting)
 {
      dbg.nospace() << "(" << "Debug not implemented" << ")";
     return dbg.space();

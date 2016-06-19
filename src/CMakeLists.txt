@@ -8,7 +8,7 @@ SET(SCRIBUS_SCRIBUSAPI_PLUGIN_MOC_CLASSES
   scribusAPIDocument.h
   scribusAPIDocumentItem.h
   scribusAPIDocumentItemText.h
-  scribusAPIDocumentItemFormatting.h
+  scribusAPIDocumentItemTextFormatting.h
   scribusAPI.h
 )
 
@@ -17,7 +17,7 @@ SET(SCRIBUS_SCRIBUSAPI_PLUGIN_SOURCES
   scribusAPIDocument.cpp
   scribusAPIDocumentItem.cpp
   scribusAPIDocumentItemText.cpp
-  scribusAPIDocumentItemFormatting.cpp
+  scribusAPIDocumentItemTextFormatting.cpp
   scribusAPI.cpp
 )
 

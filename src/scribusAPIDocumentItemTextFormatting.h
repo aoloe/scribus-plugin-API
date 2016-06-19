@@ -1,9 +1,10 @@
-/**
- * EpubExportScribusDocument is a proxy to the scribus' PageItem and is thought as
- * an interface to get information about the scribus items
+/*
+ * This file is part of the ScribusAPIDocument plugin
+ * (c) GPL 2, Ale Rimoldi <ale@graphicslab.org>
+ * For the full copyright and license information, please view the LICENSE
  */
-#ifndef SCRIBUSAPIDOCUMENTITEMFORMATTING_H
-#define SCRIBUSAPIDOCUMENTITEMFORMATTING_H
+#ifndef SCRIBUSAPIDOCUMENTITEMTEXTFORMATTING_H
+#define SCRIBUSAPIDOCUMENTITEMTEXTFORMATTING_H
 
 #include <QDebug>
 #include <QObject>
@@ -15,7 +16,10 @@ class PageItem;
 
 class ScribusAPIDocumentItem;
 
-enum ScribusAPIDocumentItemFormattingFlag {
+/**
+ * @brief Set of flags for binary comparison with the internal Scribus formatting definition
+ */
+enum ScribusAPIDocumentItemTextFormattingFlag {
     formattingFlag_None          = 0,
     formattingFlag_Superscript   = 1 << 0, // 1
     formattingFlag_Subscript     = 1 << 1, // 2
@@ -35,18 +39,17 @@ enum ScribusAPIDocumentItemFormattingFlag {
 };
 
 
-class ScribusAPIDocumentItemFormatting : public QObject
+/**
+ * @brief Read and store the text formatting at the current cursor position
+ */
+class ScribusAPIDocumentItemTextFormatting : public QObject
 {
     Q_OBJECT
 
 public:
-    /** @ deprecate we should probably construct a new object for each formatting */
-	ScribusAPIDocumentItemFormatting();
-	ScribusAPIDocumentItemFormatting(ScribusAPIDocumentItem* item);
-	~ScribusAPIDocumentItemFormatting();
+	ScribusAPIDocumentItemTextFormatting(ScribusAPIDocumentItem* item);
+	~ScribusAPIDocumentItemTextFormatting();
 
-    /** @ deprecate we should probably construct a new object for each formatting */
-    void setItem(PageItem* item) { this->item = item; }
     void setPosition(int position) { this->position = position; }
     void readAtPosition(PageItem* item, int position);
     void readAtPosition(int position) { readAtPosition(this->item, position); }
@@ -73,6 +76,6 @@ protected:
     int formatting;
 };
 
-QDebug operator<<(QDebug dbg, const ScribusAPIDocumentItemFormatting &formatting);
+QDebug operator<<(QDebug dbg, const ScribusAPIDocumentItemTextFormatting &formatting);
 
-#endif //SCRIBUSAPIDOCUMENTITEMFORMATTING_H
+#endif //SCRIBUSAPIDOCUMENTITEMTEXTFORMATTING_H

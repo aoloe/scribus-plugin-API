@@ -70,6 +70,7 @@ public:
 
     ScribusAPIDocumentMetadata getMetadata();
     bool isPortrait(int pageNumber);
+    void render();
 
     void readItems();
     QList<ScribusAPIDocumentItem*> getPageItems(int page) { return this->items[page];}

@@ -40,23 +40,24 @@ class ScribusAPIDocumentItem : public QObject
 {
     Q_OBJECT
 public:
-	ScribusAPIDocumentItem(PageItem* item) : item{item} {}
+	ScribusAPIDocumentItem(PageItem* item) : scribusItem{item} {}
 	~ScribusAPIDocumentItem() {}
-    void setPageNumber(int pageNumber) { this->pageNumber = pageNumber; }
-    PageItem* getItem() { return this->item; }
+    PageItem* getItem() { return scribusItem; }
+    void setPageNumber(int pageNumber) { pageNumber = pageNumber; }
     bool isBefore(ScribusAPIDocumentItem* const item) const;
     /**
      * used by qSort to sort the items by their place on the page
      */
     static bool isBeforeQSort(ScribusAPIDocumentItem* const item1, ScribusAPIDocumentItem* const item2) { /*return true; } // */ return item1->isBefore(item2); }
-    int getX() const { return this->item->gXpos; }
-    int getY() const { return this->item->gYpos; }
+    int getX() const { return scribusItem->gXpos; }
+    int getY() const { return scribusItem->gYpos; }
+    void render();
 
-    bool isTextFrame() { return this->item->asTextFrame(); }
-    bool isImageFrame() { return this->item->asImageFrame(); }
+    bool isTextFrame() { return scribusItem->asTextFrame(); }
+    bool isImageFrame() { return scribusItem->asImageFrame(); }
     ScribusAPIDocumentItemText* getText();
 
-    QString getName() { return this->item->itemName(); }
+    QString getName() { return scribusItem->itemName(); }
 
 
     ScribusAPIDocumentItemImageWeb getImageWeb();
@@ -64,7 +65,7 @@ public:
 
 protected:
     int pageNumber;
-    PageItem* item;
+    PageItem* scribusItem;
 };
 
 QDebug operator<<(QDebug dbg, const ScribusAPIDocumentItem &scribusDocumentItem);
