@@ -12,6 +12,8 @@ to `CMakeList.txt` file in `scribus/plugins/`.
 
 You will need a compiler that defaults to C++11 or enable C++11 in your `cmake` command.
 
+In the [Getting started](https://github.com/aoloe/scribus-manual-development/blob/master/content/getting-started/getting-started.md) manual for Scribus developers, you'll find [more in details instructions](https://github.com/aoloe/scribus-manual-development/blob/master/content/getting-started/getting-started.md#adding-a-plugin-from-a-github-repository).
+
 ## Roadmap
 
 - [x] setup the plugin
