@@ -1,5 +1,6 @@
  /**
- * This is the entry point for the plugin.
+ * @brief This is the entry point for the plugin.
+ *
  * All the methods defined here are called by Scribus' plugin execution code.
  */
 
@@ -19,12 +20,6 @@ class PLUGIN_API ScribusAPIPlugin : public ScPlugin
 public:
 	ScribusAPIPlugin();
 	virtual ~ScribusAPIPlugin();
-	/*!
-	\author Ale Rimoldi
-	\brief Run the EPUB export
-	\param filename a file to export to
-	\retval bool true
-	*/
 	/* virtual bool run(ScribusDoc* doc=0, QString filename = QString::null); */
 	virtual const QString fullTrName() const;
 	virtual const AboutData* getAboutData() const;
