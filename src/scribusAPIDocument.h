@@ -80,6 +80,8 @@ public:
     void readSections();
     QVector< QList<int> > getSections() { return this->sections; }
     QString getStylesAsCss();
+    QList<QString> getParagraphStyleNames();
+    QList<QString> getCharacterStyleNames();
     QByteArray getPageAsPNG(int pageNumber, int width, int height);
     QByteArray getPageAsPNG(int pageNumber, int maxSize);
     QByteArray getFirstPageAsCoverImage();

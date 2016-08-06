@@ -65,6 +65,40 @@ ScribusAPIDocumentMetadata ScribusAPIDocument::getMetadata()
 }
 
 /**
+ * @brief Get the list the names of all paragraph styles
+ */
+QList<QString> ScribusAPIDocument::getParagraphStyleNames()
+{
+    QList<QString> result;
+
+    const StyleSet<ParagraphStyle>* paragraphStyles = & scribusDoc->paragraphStyles();
+    int n = paragraphStyles->count();
+    for (int i = 0; i < n; ++i )
+    {
+        const ParagraphStyle paragraphStyle = (*paragraphStyles)[i];
+        result.append(paragraphStyle.name());
+    }
+    return result;
+}
+
+/**
+ * @brief Get the list the names of all paragraph styles
+ */
+QList<QString> ScribusAPIDocument::getCharacterStyleNames()
+{
+    QList<QString> result;
+
+    const StyleSet<CharStyle>* charStyles = & scribusDoc->charStyles();
+    int n = charStyles->count();
+    for (int i = 0; i < n; ++i )
+    {
+        const CharStyle charStyle = (*charStyles)[i];
+        result.append(charStyle.name());
+    }
+    return result;
+}
+
+/**
   * add OEBPS/Styles/style.css to the current epub file
   * TODO: move to ScribusAPIDocumentStyle
   */
