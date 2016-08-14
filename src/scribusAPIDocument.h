@@ -11,6 +11,7 @@
 
 #include <QString>
 #include <QList>
+#include <QStringList>
 #include <QVector>
 
 #include "scribusdoc.h"
@@ -80,8 +81,8 @@ public:
     void readSections();
     QVector< QList<int> > getSections() { return this->sections; }
     QString getStylesAsCss();
-    QList<QString> getParagraphStyleNames();
-    QList<QString> getCharacterStyleNames();
+    QStringList getParagraphStyleNames();
+    QStringList getCharacterStyleNames();
     QByteArray getPageAsPNG(int pageNumber, int width, int height);
     QByteArray getPageAsPNG(int pageNumber, int maxSize);
     QByteArray getFirstPageAsCoverImage();

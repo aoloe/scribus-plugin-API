@@ -4,6 +4,7 @@
 #include <QByteArray> // for the cover
 #include <QBuffer> // for the cover
 #include <QVectorIterator> // for sorting the items on the page
+#include <QStringList>
 
 
 #include "scribusAPIDocument.h"
@@ -67,9 +68,9 @@ ScribusAPIDocumentMetadata ScribusAPIDocument::getMetadata()
 /**
  * @brief Get the list the names of all paragraph styles
  */
-QList<QString> ScribusAPIDocument::getParagraphStyleNames()
+QStringList ScribusAPIDocument::getParagraphStyleNames()
 {
-    QList<QString> result;
+    QStringList result;
 
     const StyleSet<ParagraphStyle>* paragraphStyles = & scribusDoc->paragraphStyles();
     int n = paragraphStyles->count();
@@ -84,9 +85,9 @@ QList<QString> ScribusAPIDocument::getParagraphStyleNames()
 /**
  * @brief Get the list the names of all paragraph styles
  */
-QList<QString> ScribusAPIDocument::getCharacterStyleNames()
+QStringList ScribusAPIDocument::getCharacterStyleNames()
 {
-    QList<QString> result;
+    QStringList result;
 
     const StyleSet<CharStyle>* charStyles = & scribusDoc->charStyles();
     int n = charStyles->count();
