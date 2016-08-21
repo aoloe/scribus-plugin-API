@@ -10,6 +10,8 @@
 #include "scribusAPIDocumentItem.h"
 #include "scribusAPIDocumentItemTextFormatting.h"
 
+#include "styles/paragraphstyle.h"
+
 ScribusAPIDocumentItemText::ScribusAPIDocumentItemText(ScribusAPIDocumentItem* documentItem) : documentItem{documentItem}
 {
 }
@@ -488,12 +490,19 @@ void ScribusAPIDocumentItemText::appendParagraph(const QString text, const QStri
 
 /**
  * @brief  Apply the paragraph style at the current cursor position.
+ *
+ * @todo:
+ * - apply the style depending on the "type" of the current selection:
+ *   - to the whole frame if a frame is selected
+ *   - to the whole paragraphs in the selection if there is a selection
+ *   - to the whole current paragraph if there is no selection but the cursor is in edit mode.
  */
 void ScribusAPIDocumentItemText::applyParagraphStyle(const QString styleName)
 {
-	// ParagraphStyle pstyle;
-	// pstyle.setParent(levelSetup.textStyle);
-	// tocFrame->itemText.applyStyle(pos, pstyle);
+    PageItem* item = documentItem->getItem();
+	ParagraphStyle pstyle;
+	pstyle.setParent(styleName);
+    item->itemText.applyStyle(0, pstyle);
 }
 
 /**
@@ -501,9 +510,23 @@ void ScribusAPIDocumentItemText::applyParagraphStyle(const QString styleName)
  */
 void ScribusAPIDocumentItemText::applyParagraphStyle(int position, const QString styleName)
 {
-	// ParagraphStyle pstyle;
-	// pstyle.setParent(levelSetup.textStyle);
+
+    /*
+
+	ParagraphStyle pstyle;
+	pstyle.setParent(styleName);
 	// tocFrame->itemText.applyStyle(pos, pstyle);
+    documentItem->getItem()->applyStyle(0, pstyle);
+    */
+    // cf: void ScribusDoc::itemSelection_SetNamedParagraphStyle(const QString& name, Selection* customSelection) for grocking how to "manually" apply the style; customSelection is by default 0
+    // doc->itemSelection_SetNamedParagraphStyle(name);
+    // TODO: how to access the document from item?
+    documentItem->getItem()->doc()->itemSelection_SetNamedParagraphStyle(styleName);
+    // TODO: we have to update the screen and make the doc dirty
+    // but the following commands do not work.
+    // and itemSelection_SetParagraphStyle() seems to already do the update
+    // documentItem->getItem()->update();
+    // documentItem->getItem()->doc()->changed();
 }
 
 QDebug operator<<(QDebug dbg, ScribusAPIDocumentItemText &item)
