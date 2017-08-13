@@ -54,6 +54,7 @@ public:
 	void appendParagraph(const QString text, const QString paragraphStyle = "");
 	void applyParagraphStyle(const QString styleName);
 	void applyParagraphStyle(int position, const QString styleName);
+	void applyCharacterStyle(const QString styleName);
 
 private:
 	ScribusAPIDocumentItem* documentItem;

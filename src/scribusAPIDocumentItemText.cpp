@@ -482,10 +482,10 @@ void ScribusAPIDocumentItemText::appendParagraph(const QString text, const QStri
 		item->itemText.insertChars(pos, SpecialChars::PARSEP);
 		pos++;
 	}
-	item->itemText.insertChars(pos, text);
 	if (paragraphStyle != "") {
 		applyParagraphStyle(paragraphStyle);
 	}
+	item->itemText.insertChars(pos, text);
 }
 
 /**
@@ -496,13 +496,23 @@ void ScribusAPIDocumentItemText::appendParagraph(const QString text, const QStri
  *   - to the whole frame if a frame is selected
  *   - to the whole paragraphs in the selection if there is a selection
  *   - to the whole current paragraph if there is no selection but the cursor is in edit mode.
+ *   - have a look at `void ScribusDoc::itemSelection_SetNamedCharStyle(const QString& name, Selection* customSelection)`
+ *   - a different approach might use the story-applyStyle(pos, style)  used in gtaction.cpp
+ *   - it probably only works if we are already in edit mode and the cursor has a position
+ *
+ *
+ * a good example for applying the paragraph style seems to be
+ * void ScribusMainWindow::setNewCharStyle(const QString& name)
+ * in scribus.cpp, which is called from the properties palette.
+ *
  */
 void ScribusAPIDocumentItemText::applyParagraphStyle(const QString styleName)
 {
     PageItem* item = documentItem->getItem();
 	ParagraphStyle pstyle;
 	pstyle.setParent(styleName);
-    item->itemText.applyStyle(0, pstyle);
+    // item->itemText.applyStyle(0, pstyle);
+    documentItem->getItem()->doc()->itemSelection_ApplyParagraphStyle(pstyle);
 }
 
 /**
@@ -510,6 +520,8 @@ void ScribusAPIDocumentItemText::applyParagraphStyle(const QString styleName)
  */
 void ScribusAPIDocumentItemText::applyParagraphStyle(int position, const QString styleName)
 {
+
+    qDebug() << "apply p style" << styleName;
 
     /*
 
@@ -521,12 +533,43 @@ void ScribusAPIDocumentItemText::applyParagraphStyle(int position, const QString
     // cf: void ScribusDoc::itemSelection_SetNamedParagraphStyle(const QString& name, Selection* customSelection) for grocking how to "manually" apply the style; customSelection is by default 0
     // doc->itemSelection_SetNamedParagraphStyle(name);
     // TODO: how to access the document from item?
-    documentItem->getItem()->doc()->itemSelection_SetNamedParagraphStyle(styleName);
-    // TODO: we have to update the screen and make the doc dirty
-    // but the following commands do not work.
-    // and itemSelection_SetParagraphStyle() seems to already do the update
-    // documentItem->getItem()->update();
-    // documentItem->getItem()->doc()->changed();
+    // TODO: get selection and pass it as the second parameter for itemSelection_ApplyParagraphStyle()
+    // TODO: to the same for the character styles
+    // Selection tempSelection(this, false);
+    // tempSelection.addItem(item, true);
+    PageItem* item = documentItem->getItem();
+	ParagraphStyle pstyle;
+	pstyle.setParent(styleName);
+    documentItem->getItem()->doc()->itemSelection_ApplyParagraphStyle(pstyle);
+    item->itemText.applyStyle(position, pstyle);
+}
+
+/**
+ * @brief  Apply the character style at the current cursor position.
+ *
+ * @todo:
+ * - apply the style depending on the "type" of the current selection:
+ *   - to the whole frame if a frame is selected
+ *   - to the whole paragraphs in the selection if there is a selection
+ *   - to the whole current paragraph if there is no selection but the cursor is in edit mode.
+ *   - have a look at `void ScribusDoc::itemSelection_SetNamedCharStyle(const QString& name, Selection* customSelection)`
+ */
+void ScribusAPIDocumentItemText::applyCharacterStyle(const QString styleName)
+{
+
+    qDebug() << "apply c style" << styleName;
+
+    /*
+    PageItem* item = documentItem->getItem();
+	CharStyle cstyle;
+	newStyle.setParent(name);
+	itemSelection_ApplyCharStyle(newStyle);
+    documentItem->getItem()->doc()->itemSelection_ApplyCharacterStyle(cstyle);
+    */
+    documentItem->getItem()->doc()->itemSelection_SetNamedCharStyle(styleName);
+    // PageItem *currItem = documentItem->getItem()->doc()->m_Selection->itemAt(0);
+    // ScribusMainWindow::setTBvals(currItem);
+
 }
 
 QDebug operator<<(QDebug dbg, ScribusAPIDocumentItemText &item)
