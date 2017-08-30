@@ -278,7 +278,7 @@ QByteArray ScribusAPIDocument::getPageAsPNG(int pageNumber, int width, int heigh
 QByteArray ScribusAPIDocument::getPageAsPNG(int pageNumber, int maxSize)
 {
     QImage image;
-    image = scribusDoc->view()->PageToPixmap(pageNumber, maxSize, false);
+    image = scribusDoc->view()->PageToPixmap(pageNumber, maxSize, Pixmap_DrawBackground);
 
     QByteArray bytearray;
     QBuffer buffer(&bytearray);
