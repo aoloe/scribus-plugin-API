@@ -69,6 +69,7 @@ public:
     void set(ScribusDoc* scribusDoc) { this->scribusDoc = scribusDoc; }
     void setPageRange(QList<int> pageRange) { this->pageRange = pageRange; }
 
+    QString getPath() { return scribusDoc->DocName; }
     ScribusAPIDocumentMetadata getMetadata();
     bool isPortrait(int pageNumber);
     void render();
