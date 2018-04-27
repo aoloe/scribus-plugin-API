@@ -18,16 +18,30 @@ In the [Getting started](https://github.com/aoloe/scribus-manual-development/blo
 
 - [x] setup the plugin
 - [x] activate a first class and method and try to call it from another plugin
+- [ ] add lot of doxygen comments
+  - each file
+  - each class
+  - each public method
 - [ ] use namespaces
 - [x] setup a documentation framework (probably QDoc)
 - [x] move the epub's plugin `ScribusDocument` class to the `ScribusAPI`
 - [ ] make more publicity for this project and find out how to improve its architecture / add more coverage of Scribus features.
 
-## Development
+## Doxygen documentation
 
 We have a Doxygen documentation of the code:
 
 <http://impagina.org/dox/api/>
+
+The documentation can by running (at the root of this repository):
+
+```
+doxygen documentation/config.doxygen
+```
+
+to create the html documentation in the `documentation` directory.
+
+You can enable, generate and use the latex files to then create a Pdf version of the documentation with `pdflatex`.
 
 ## Notes
 
