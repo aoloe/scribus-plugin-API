@@ -42,7 +42,7 @@ ScribusAPIDocumentItemImageWeb ScribusAPIDocumentItem::getImageWeb()
     ScribusAPIDocumentItemImageWeb result;
 
     QString filename(scribusItem->Pfile);
-    qDebug() << "filename" << filename;
+    // qDebug() << "filename" << filename;
     if (filename == "")
         return result;
     result.path = filename;
