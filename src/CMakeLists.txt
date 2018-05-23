@@ -4,21 +4,28 @@ ${CMAKE_SOURCE_DIR}/scribus
 )
 
 SET(SCRIBUS_SCRIBUSAPI_PLUGIN_MOC_CLASSES
-  scribusAPIplugin.h
-  scribusAPIDocument.h
-  scribusAPIDocumentItem.h
-  scribusAPIDocumentItemText.h
-  scribusAPIDocumentItemTextFormatting.h
-  scribusAPI.h
+  # string.h
+  scribus.h
+  # metadata.h
+  # document.h
+  # scribusAPIplugin.h
+  # scribusAPIDocument.h
+  # scribusAPIDocumentItem.h
+  # scribusAPIDocumentItemText.h
+  # scribusAPIDocumentItemTextFormatting.h
+  # scribusAPI.h
 )
 
 SET(SCRIBUS_SCRIBUSAPI_PLUGIN_SOURCES
-  scribusAPIplugin.cpp
-  scribusAPIDocument.cpp
-  scribusAPIDocumentItem.cpp
-  scribusAPIDocumentItemText.cpp
-  scribusAPIDocumentItemTextFormatting.cpp
-  scribusAPI.cpp
+  # scribus.cpp
+  # metadata.cpp
+  # document.cpp
+  # scribusAPIplugin.cpp
+  # scribusAPIDocument.cpp
+  # scribusAPIDocumentItem.cpp
+  # scribusAPIDocumentItemText.cpp
+  # scribusAPIDocumentItemTextFormatting.cpp
+  # scribusAPI.cpp
 )
 
 SET(SCRIBUS_SCRIBUSAPI_PLUGIN "scribusAPI")
