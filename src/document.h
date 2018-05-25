@@ -32,6 +32,17 @@ class Document
         {
         }
 
+        /**
+         * \brief Open the Scribus file if it exists or create it.
+         * \param filename Absolute path to the file
+         * TODO: in this case we have to delete the scribusDoc in the destructor. or let scribus add it to the list of docs and manage its closing.
+         */
+        /*
+        Document(std::string filename)
+        {
+        }
+        */
+
         ~Document()
         {
         }
@@ -41,23 +52,17 @@ class Document
         /**
          * Return the first selected item, if any.
          */
-        // nonstd::optional<Item> getActiveItem();
-        // TODO: temporary avoid using the implementation in the cpp file
-        nonstd::optional<Item> getActiveItem() { return Item{}; }
+        nonstd::optional<Item> getActiveItem();
 
         /**
          * /brief Get the names of all character styles
          */
-        // std::vector<std::string> getCharacterStyleNames();
-        // TODO: temporary avoid using the implementation in the cpp file
-        std::vector<std::string> getCharacterStyleNames() { return {}; }
+        std::vector<std::string> getCharacterStyleNames();
 
         /**
          * /brief Get the names of all paragraph styles
          */
-        // std::vector<std::string> getParagraphStyleNames();
-        // TODO: temporary avoid using the implementation in the cpp file
-        std::vector<std::string> getParagraphStyleNames() { return {}; }
+        std::vector<std::string> getParagraphStyleNames();
 
     private:
         ScribusDoc* scribusDoc;

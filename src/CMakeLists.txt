@@ -9,7 +9,9 @@ SET(SCRIBUS_SCRIBUSAPI_PLUGIN_MOC_CLASSES
 
 SET(SCRIBUS_SCRIBUSAPI_PLUGIN_SOURCES
   scribusAPIplugin.cpp
-  # document.cpp
+  document.cpp
+  item.cpp
+  frameText.cpp
 )
 
 SET(SCRIBUS_SCRIBUSAPI_PLUGIN_CLASSES

@@ -1,10 +1,13 @@
-#ifndef SCRIBUSAPITITEM_H
-#define SCRIBUSAPITITEM_H
+#ifndef SCRIBUSAPIITEM_H
+#define SCRIBUSAPIITEM_H
 
+// scribus/...
 #include "pageitem_textframe.h"
 
 namespace ScribusAPI
 {
+
+class FrameText;
 
 /**
  * Item is a proxy to the scribus' PageItem and providing access to the
@@ -19,7 +22,13 @@ public:
 
     ~Item() {}
 
-    PageItem* getScribusItem() { return scribusPageItem; }
+    /**
+     * \brief Get the original Scribus item
+     *
+     * You get access to the Scribus item. You can access the
+     * full item's features, without going through the API.
+     */
+    PageItem* getScribusItem() const { return scribusPageItem; }
 
     void setPageNumber(int pageNumber) { pageNumber = pageNumber; }
 
@@ -28,6 +37,9 @@ public:
     int getY() const { return scribusPageItem->gYpos; }
 
     bool isTextFrame() { return scribusPageItem->asTextFrame(); }
+
+    FrameText getFrameText();
+
 
     bool isImageFrame() { return scribusPageItem->asImageFrame(); }
 
@@ -41,4 +53,4 @@ private:
 
 }
 
-#endif //SCRIBUSAPIITEM_H 
+#endif // SCRIBUSAPIITEM_H 
