@@ -11,7 +11,7 @@ SET(SCRIBUS_SCRIBUSAPI_PLUGIN_SOURCES
   scribusAPIplugin.cpp
   document.cpp
   item.cpp
-  frameText.cpp
+  textFrame.cpp
 )
 
 SET(SCRIBUS_SCRIBUSAPI_PLUGIN_CLASSES

@@ -7,7 +7,7 @@
 namespace ScribusAPI
 {
 
-class FrameText;
+class TextFrame;
 
 /**
  * Item is a proxy to the scribus' PageItem and providing access to the
@@ -38,7 +38,7 @@ public:
 
     bool isTextFrame() { return scribusPageItem->asTextFrame(); }
 
-    FrameText getFrameText();
+    TextFrame getTextFrame();
 
 
     bool isImageFrame() { return scribusPageItem->asImageFrame(); }
