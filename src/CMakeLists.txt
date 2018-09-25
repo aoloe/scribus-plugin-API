@@ -19,6 +19,7 @@ SET(SCRIBUS_SCRIBUSAPI_PLUGIN_CLASSES
   scribus.h
   item.h
   document.h
+  textFormatting.h
  
   # metadata.h
 )

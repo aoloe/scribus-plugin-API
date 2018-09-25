@@ -10,6 +10,10 @@
 
 #include "item.h"
 
+class ScPage; // TODO: for getPageRect() remove it, it's moved to ScPage
+class MarginStruct; // TODO: for getPageRect() remove it, it's moved to ScPage
+
+
 namespace ScribusAPI
 {
 
@@ -50,11 +54,6 @@ class Document
         bool isOpen() { return scribusDoc != nullptr; }
 
         /**
-         * Return the first selected item, if any.
-         */
-        nonstd::optional<Item> getActiveItem();
-
-        /**
          * /brief Get the names of all character styles
          */
         std::vector<std::string> getCharacterStyleNames();
@@ -64,8 +63,35 @@ class Document
          */
         std::vector<std::string> getParagraphStyleNames();
 
+        /**
+         * \brief The number of pages in the document
+         */
+        int getPageCount() { return this->scribusDoc->DocPages.count(); }
+        /**
+         * \brief Get the page number as defined in the current section.
+         * \param i The index of the page in the document.
+         */
+        std::string getPageNumber(int i) { return scribusDoc->getSectionPageNumberForPageIndex(i).toUtf8().constData(); }
+
+        /**
+         * Return the first selected item, if any.
+         */
+        nonstd::optional<Item> getActiveItem();
+
+        std::vector<Item> getPageItems(int page) { readItems(); return items.at(page);}
+
     private:
         ScribusDoc* scribusDoc;
+        std::vector<std::vector<Item>> items{};
+        void readItems();
+        /**
+         * \brief List of pages where an item shows up
+         */
+        std::vector<ScPage *> getPagesWithItem(PageItem* item);
+        QRect getPageQRect(const ScPage* page);
+        MarginStruct getPageBleeds(const ScPage* page);
+        // TODO: in the previous version, typically from the options... how to manage it now?
+        std::vector<int> pageRange;
 };
 
 }

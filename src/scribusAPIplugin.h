@@ -26,7 +26,7 @@ class PLUGIN_API ScribusAPIPlugin : public ScPlugin
 public:
 	ScribusAPIPlugin();
 	virtual ~ScribusAPIPlugin();
-	/* virtual bool run(ScribusDoc* doc=0, QString filename = QString::null); */
+	/* virtual bool run(ScribusDoc* doc=0, const QString& filename = QString::null); */
 	virtual const QString fullTrName() const;
 	virtual const AboutData* getAboutData() const;
 	virtual void deleteAboutData(const AboutData* about) const;
