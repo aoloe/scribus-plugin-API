@@ -16,17 +16,17 @@ namespace ScribusAPI
 
 nonstd::optional<Item> Document::getActiveItem()
 {
-	if (scribusDoc->m_Selection->count() != 1)
-	{
-		return {};
-	}
+    if (scribusDoc->m_Selection->count() != 1)
+    {
+        return {};
+    }
 
-	PageItem* current = scribusDoc->m_Selection->itemAt(0);
-	auto item = Item(current);
+    PageItem* current = scribusDoc->m_Selection->itemAt(0);
+    auto item = Item(current);
 
-	// item->setPageNumber(pageNumber); TODO: find out the page number
+    // item->setPageNumber(pageNumber); TODO: find out the page number
 
-	return {item};
+    return {item};
 }
 
 std::vector<std::string> Document::getCharacterStyleNames()
@@ -76,8 +76,8 @@ void Document::readItems()
     // qDebug() << "readItems n: " << n;
     items.resize(n);
     for (auto scribusItem: scribusDoc->DocItems) {
-		if (!scribusItem->printEnabled()) {
-			continue;
+        if (!scribusItem->printEnabled()) {
+            continue;
         }
 
         if (std::find(layerNotPrintable.begin(), layerNotPrintable.end(), scribusItem->LayerID) != layerNotPrintable.end()) {
@@ -88,17 +88,17 @@ void Document::readItems()
     }
 
     /*
-	foreach(PageItem* docItem, scribusDoc->DocItems)
+    foreach(PageItem* docItem, scribusDoc->DocItems)
     {
-		if (!docItem->printEnabled())
-			continue;
+        if (!docItem->printEnabled())
+            continue;
         if (layerNotPrintable.contains(docItem->LayerID))
             continue;
 
         auto itemPages = getPagesWithItem(docItem);
-		// if the item is not on a page, ignore it
+        // if the item is not on a page, ignore it
         if (itemPages.empty())
-			continue;
+            continue;
 
         int pageNumber= itemPages.first()->pageNr();
 
@@ -133,11 +133,11 @@ std::vector<ScPage *> Document::getPagesWithItem(PageItem* item)
     std::vector<ScPage *> result;
 
     // some woodoo adjustings
-	if (item->isGroup())
-		item->asGroupFrame()->adjustXYPosition();
-	item->setRedrawBounding();
+    if (item->isGroup())
+        item->asGroupFrame()->adjustXYPosition();
+    item->setRedrawBounding();
 
-	double itemLineWidth = item->lineWidth();
+    double itemLineWidth = item->lineWidth();
     QRect pageRect;
     QRect itemRect = QRect(
         static_cast<int>(item->BoundingX - itemLineWidth / 2.0), // x
