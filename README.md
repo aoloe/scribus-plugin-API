@@ -8,7 +8,7 @@ Clone the `scribus-plugin-API` repository and put – or symlink – its `src` d
 
     ADD_SUBDIRECTORY(scribusAPI)
 
-to `CMakeList.txt` file in `scribus/plugins/`.
+to `CMakeLists.txt` file in `scribus/plugins/`.
 
 You will need a compiler that defaults to C++11 or enable C++11 in your `cmake` command.
 
